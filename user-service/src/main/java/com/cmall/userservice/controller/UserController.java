@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private AccountService accountService;
 
-    @PutMapping("account")
+    @PutMapping("/account")
     public ResponseEntity<User> updateAccountInfo(@RequestBody AccountUpdateDto accountUpdateDto){
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
@@ -25,10 +25,11 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @GetMapping("/")
+    @GetMapping("/account")
     public ResponseEntity<AccountDetailResponse> getUserDetails() {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
+        System.out.println("userdetails  " + userDetails.getUsername());
         AccountDetailResponse accountDetails = accountService.getUserDetails(user);
         return ResponseEntity.ok(accountDetails);
     }
