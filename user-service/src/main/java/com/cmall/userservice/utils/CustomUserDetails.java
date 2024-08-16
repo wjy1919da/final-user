@@ -11,6 +11,12 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
     }
+
+    public User getUser() {
+        return this.user;
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 返回用户权限集合
@@ -26,6 +32,8 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {

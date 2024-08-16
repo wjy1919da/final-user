@@ -35,7 +35,7 @@ public class User {
     @Size(min = 6, max = 100, message = "Password must be between 6 and 100 characters long.")
     private String passwordHash;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

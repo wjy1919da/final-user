@@ -53,6 +53,7 @@ public class SecurityDBJWTConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 设置会话为无状态
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/api/auth/signup").permitAll() // 允许所有用户访问 `/api/auth/signup`
+                        .antMatchers("/api/auth/signin").permitAll()
                         .anyRequest().authenticated()) // 所有其他请求都需要认证
                 .formLogin(form -> form.disable()) // 禁用表单登录，适用于JWT认证模式
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); // 添加自定义JWT过滤器

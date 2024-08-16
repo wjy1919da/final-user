@@ -1,6 +1,7 @@
 package com.cmall.userservice.controller;
 
 import com.cmall.userservice.payload.JWTAuthResponse;
+import com.cmall.userservice.payload.LoginDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import com.cmall.userservice.dao.RoleRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,6 +103,34 @@ public class AuthJWTController {
         logger.info(registerDto.getEmail() + " registered successfully and token generated");
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+        logger.info(loginDto.getEmail() + " is trying to sign in to our application");
+        System.out.println(loginDto.getEmail() +"    "+ loginDto.getPassword());
+        // 尝试进行认证
+        try {
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+            );
+
+            // 设置安全上下文
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // 生成JWT token
+            String token = tokenProvider.generateToken(authentication);
+
+            // 构建响应
+            JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
+
+            logger.info(loginDto.getEmail() + " signed in successfully");
+            return ResponseEntity.ok(jwtAuthResponse);
+        } catch (AuthenticationException ex) {
+            logger.error("Authentication failed for user: " + loginDto.getEmail(), ex);
+            return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }
