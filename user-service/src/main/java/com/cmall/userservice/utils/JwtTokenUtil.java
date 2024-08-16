@@ -2,20 +2,26 @@ package com.cmall.userservice.utils;
 
 import com.cmall.userservice.exception.AccountAPIException;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-    @Value("${app.jwt-secret}")
-    private String jwtSecret;
+    private final String jwtSecret;
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationInMs;
 
+    public JwtTokenUtil() {
+        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // 生成符合要求的密钥
+        this.jwtSecret = Base64.getEncoder().encodeToString(key.getEncoded()); // 将密钥编码为Base64字符串
+    }
 
     /**
      * generate token

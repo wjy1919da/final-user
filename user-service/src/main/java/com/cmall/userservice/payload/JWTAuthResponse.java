@@ -11,4 +11,8 @@ public class JWTAuthResponse {
     @Getter
     @Setter
     private String tokenType;
+
+    public JWTAuthResponse(String accessToken){
+        this.accessToken = accessToken;
+    }
 }
