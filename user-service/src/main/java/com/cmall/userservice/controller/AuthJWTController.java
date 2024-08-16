@@ -80,7 +80,7 @@ public class AuthJWTController {
         user.setRoles(userRoles);
 
         // 保存用户
-        userRepository.save(user);
+        User response = userRepository.save(user);
 
         // 生成认证信息
         Authentication authentication = authenticationManager.authenticate(
@@ -95,7 +95,8 @@ public class AuthJWTController {
 
         // 构建响应
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
-        jwtAuthResponse.setTokenType("JWT");
+        jwtAuthResponse.setUserId(response.getUserId());
+        jwtAuthResponse.setUsername(response.getUsername());
 
         logger.info(registerDto.getEmail() + " registered successfully and token generated");
 

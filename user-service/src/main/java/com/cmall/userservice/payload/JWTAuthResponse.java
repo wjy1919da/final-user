@@ -1,16 +1,15 @@
 package com.cmall.userservice.payload;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.cmall.userservice.entity.Role;
+import lombok.Data;
 
+import java.util.Set;
+
+@Data
 public class JWTAuthResponse {
-    @Getter
-    @Setter
     private String accessToken;
-
-    @Getter
-    @Setter
-    private String tokenType;
+    private int userId;
+    private String username;
 
     public JWTAuthResponse(String accessToken){
         this.accessToken = accessToken;
