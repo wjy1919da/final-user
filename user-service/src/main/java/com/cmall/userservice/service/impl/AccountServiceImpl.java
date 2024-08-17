@@ -65,9 +65,24 @@ public class AccountServiceImpl implements AccountService {
         AccountDetailResponse response = new AccountDetailResponse();
         response.setEmail(user.getEmail());
         response.setUsername(user.getUsername());
-        response.setShippingAddress(convertAddress(addressRepository.findById(user.getShippingAddress()).orElse(null)));
-        response.setBillingAddress(convertAddress(addressRepository.findById(user.getBillingAddress()).orElse(null)));
-        response.setPaymentMethod(convertPaymentMethod(paymentMethodRepository.findById(user.getPaymentMethodId()).orElse(null)));
+
+        if (user.getShippingAddress() != null) {
+            response.setShippingAddress(convertAddress(addressRepository.findById(user.getShippingAddress()).orElse(null)));
+        } else {
+            response.setShippingAddress(null);
+        }
+
+        if (user.getBillingAddress() != null) {
+            response.setBillingAddress(convertAddress(addressRepository.findById(user.getBillingAddress()).orElse(null)));
+        } else {
+            response.setBillingAddress(null);
+        }
+
+        if (user.getPaymentMethodId() != null) {
+            response.setPaymentMethod(convertPaymentMethod(paymentMethodRepository.findById(user.getPaymentMethodId()).orElse(null)));
+        } else {
+            response.setPaymentMethod(null);
+        }
 
         return response;
     }

@@ -29,7 +29,7 @@ public class UserController {
     public ResponseEntity<AccountDetailResponse> getUserDetails() {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
-        System.out.println("userdetails  " + userDetails.getUsername());
+//        System.out.println("userdetails  " + userDetails.getUsername());
         AccountDetailResponse accountDetails = accountService.getUserDetails(user);
         return ResponseEntity.ok(accountDetails);
     }
